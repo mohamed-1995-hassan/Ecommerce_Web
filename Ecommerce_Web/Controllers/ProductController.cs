@@ -16,13 +16,13 @@ namespace Ecommerce_Web.Controllers
             _productRepository = productRepository;
             _config = config;
         }
-        [HttpGet]
-        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts(ProductQueryParams queryParams)
+        [HttpGet()]
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductQueryParams queryParams)
         {
             var products = await _productRepository.GetProductsAsync(queryParams.BrandId,
                                                                      queryParams.TypeId,
                                                                      queryParams.Name,
-                                                                     queryParams.ascending,
+                                                                     queryParams.sort,
                                                                      queryParams.PageIndex,
                                                                      queryParams.PageSize);
 

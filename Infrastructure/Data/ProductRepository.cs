@@ -4,6 +4,7 @@ using Core.Interfaces;
 using Ecommerce_Web.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace Infrastructure.Data
 {
@@ -26,8 +27,8 @@ namespace Infrastructure.Data
 
         public async Task<List<Product>> GetProductsAsync(int? brandId = null,
                                                           int? typeId = null,
-                                                          string name = "",
-                                                          bool ascending = true,
+                                                          string? name = "",
+                                                          string? sort = "",
                                                           int pageIndex = 1,
                                                           int pageSize = 5)
         {
@@ -39,7 +40,8 @@ namespace Infrastructure.Data
                                      .Where(GetPredicate(brandId, typeId, name));
 
 
-            query = ascending ? query.OrderBy(p => p.Price) : query.OrderByDescending(p => p.Price);
+            query = GetOrderExpression(query, sort);
+
             query = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
             var data = await query.ToListAsync();
 
@@ -65,6 +67,17 @@ namespace Infrastructure.Data
         private Expression<Func<Product, bool>> GetPredicate(int? brandId = null, int? typeId = null, string name = "") =>
                                             p => (!brandId.HasValue || p.ProductBrandId == brandId) &&
                                                  (!typeId.HasValue || p.ProductTypeId == typeId) &&
-                                                 (!string.IsNullOrEmpty(name) || p.Name.ToLower().Contains(name));
+                                                 (string.IsNullOrEmpty(name) || p.Name.ToLower().Contains(name.ToLower()));
+
+        private IQueryable<Product> GetOrderExpression(IQueryable<Product> query,string sort)
+        {
+            if (sort == "priceAsc")
+                return query.OrderBy(p => p.Price);
+
+            if(sort == "priceDsc")
+                return query.OrderByDescending(p => p.Price);
+
+            return query.OrderBy(p => p.Name);
+        }
     }
 }

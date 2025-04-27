@@ -27,7 +27,7 @@ namespace Ecommerce_Web.Controllers
         [HttpGet("server-error")]
         public ActionResult GetNotServerErrorResult()
         {
-            var thing = _context.Products.Find(42);
+            var thing = _context.Products.FirstOrDefault(x => x.Id == 42);
             thing.ToString();
 
             return Ok();

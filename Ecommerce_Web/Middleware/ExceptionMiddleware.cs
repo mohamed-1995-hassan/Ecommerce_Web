@@ -1,6 +1,7 @@
 ﻿using Ecommerce_Web.Errors;
+using Newtonsoft.Json;
 using System.Net;
-using System.Text.Json;
+
 
 namespace Ecommerce_Web.Middleware
 {
@@ -38,12 +39,7 @@ namespace Ecommerce_Web.Middleware
                     new ApiResponse((int)HttpStatusCode.InternalServerError,
                                     e.Message);
 
-                var option = new JsonSerializerOptions
-                {
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                };
-
-                var json = JsonSerializer.Serialize(response, option);
+                var json = JsonConvert.SerializeObject(response);
 
                 await context.Response.WriteAsync(json);
             }

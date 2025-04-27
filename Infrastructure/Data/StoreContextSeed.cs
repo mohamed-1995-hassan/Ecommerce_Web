@@ -44,8 +44,37 @@ namespace Infrastructure.Data
                         Price = 300,
                         ProductBrandId = productBrands[1].Id,
                         ProductTypeId = productTypes[1].Id,
+                    },
+                    new Product
+                    {
+                        Name = "Product Three Name",
+                        Description = "Product Three Description",
+                        PictureUrl = "image/photo.png",
+                        Price = 100,
+                        ProductBrandId = productBrands[0].Id,
+                        ProductTypeId = productTypes[0].Id,
+                    },
+                    new Product
+                    {
+                        Name = "Product Four Name",
+                        Description = "Product Four Description",
+                        PictureUrl = "image/photo.png",
+                        Price = 300,
+                        ProductBrandId = productBrands[1].Id,
+                        ProductTypeId = productTypes[1].Id,
+                    },
+                    new Product
+                    {
+                        Name = "Product Five Name",
+                        Description = "Product Five Description",
+                        PictureUrl = "image/photo.png",
+                        Price = 100,
+                        ProductBrandId = productBrands[0].Id,
+                        ProductTypeId = productTypes[0].Id,
                     }
                 });
+                
+                context.SaveChanges();
             }
         }
 

@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors("CorsPolicy");
-app.UseStatusCodePagesWithReExecute("/errors/{0}");
+app.UseStatusCodePagesWithReExecute("/error/{0}");
 app.UseAuthorization();
 
 
@@ -35,6 +35,7 @@ using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 var context = services.GetRequiredService<StoreContext>();
 var logger = services.GetRequiredService<ILogger<Program>>();
+await StoreContextSeed.SeedAsync(context);
 
 try
 {
