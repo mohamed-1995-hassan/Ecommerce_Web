@@ -2,8 +2,6 @@
 using Core.Entities;
 using Core.Interfaces;
 using Ecommerce_Web.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -11,13 +9,11 @@ namespace Infrastructure.Data
     public class CartRepository : ICartRepository
     {
         private readonly StoreContext _db;
-        public CartRepository(StoreContext db,
-                              IHttpContextAccessor httpContextAccessor,
-                              UserManager<IdentityUser> userManager)
+        public CartRepository(StoreContext db)
         {
             _db = db;
         }
-        public async Task AddCartItem(int cartId,int productId, int quantity)
+        public async Task AddCartItem(Guid cartId,int productId, int quantity)
         {
             using var transaction = _db.Database.BeginTransaction();
 
@@ -54,26 +50,29 @@ namespace Infrastructure.Data
             
         }
 
-        public async Task<bool> RemoveCartItem(int cartId, int productId)
+        public async Task RemoveCartItem(Guid cartId, int productId)
         {
-            var cart = await _db.Carts.FirstOrDefaultAsync(c => c.Id == cartId);
+            var cart = await _db.Carts.Include(c => c.CartItems).FirstOrDefaultAsync(c => c.Id == cartId);
             if (cart is null)
                 throw new InvalidOperationException("Invalid cart");
-            _db.SaveChanges();
+
             var cartItem = _db.CartItems.FirstOrDefault(c => c.CartId == cart.Id
                                                         && c.ProductId == productId);
             if (cartItem is null)
                throw new InvalidOperationException("Not items in cart");
-            else if (cartItem.Quantity == 1)
+
+            cartItem.Quantity = cartItem.Quantity - 1;
+
+            if (cartItem.Quantity == 0)
                 _db.CartItems.Remove(cartItem);
-            else
-                cartItem.Quantity = cartItem.Quantity - 1;
+                
+            if(cart.CartItems.Count == 0)
+                _db.Carts.Remove(cart);
+
             _db.SaveChanges();
-         
-            return true;
         }
 
-        public async Task<Cart> GetUserCart(int cartId)
+        public async Task<Cart> GetUserCart(Guid cartId)
         {
             
             var shoppingCart = await _db.Carts

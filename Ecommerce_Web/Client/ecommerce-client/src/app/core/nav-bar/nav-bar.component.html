@@ -7,9 +7,11 @@
 
     </nav>
     <div class="d-flex align-items-center">
-        <a class="position-relative">
+        <a routerLink="/cart" class="position-relative">
             <i class="fa fa-shopping-cart fa-2x mr-5 text-dark"></i>
-            <div class="cart-no">5</div>
+            <div class="cart-no" *ngIf="(cartService.cartSource$ | async) as cart">
+              {{getCount(cart.items)}}
+            </div>
         </a>
         <a href="" class="btn btn-outline-secondary mr-2">Login</a>
         <a href="" class="btn btn-outline-secondary mr-3">Register</a>

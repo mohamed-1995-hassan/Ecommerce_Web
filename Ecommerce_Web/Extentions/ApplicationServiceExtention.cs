@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Core.Services;
 using Ecommerce_Web.Data;
 using Ecommerce_Web.Errors;
 using Infrastructure.Data;
@@ -19,6 +20,8 @@ namespace Ecommerce_Web.Extentions
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<CartService>();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>
