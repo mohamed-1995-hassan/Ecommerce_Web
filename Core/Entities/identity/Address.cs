@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 
 namespace Core.Entities.identity
 {
@@ -15,5 +16,11 @@ namespace Core.Entities.identity
         [Required]
         public string AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+
+        public void SetAddressValues(string firstName, string lastName, string city, string zip,
+                                     string state, string street)
+        {
+
+        }
     }
 }

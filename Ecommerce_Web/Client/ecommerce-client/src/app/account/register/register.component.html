@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-3">
+        <form [formGroup]="registerForm" class="form-signin" (ngSubmit)="onSubmit()">
+            <div class="text-center mb-4">
+              <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+            </div>
+
+            <div class="form-label-group">
+                <input formControlName="displayName" type="text" id="displayName" class="form-control" placeholder="Enter your name"/>
+                <label  for="displayName">Enter your name</label>
+                <span class="text-danger" *ngIf="registerForm.get('displayName')?.invalid &&
+                             registerForm.get('displayName')?.touched && 
+                             registerForm.get('displayName')?.errors?.['required']">
+                 Name is required
+                </span>
+              </div>
+
+
+          
+            <div class="form-label-group">
+              <input formControlName="email" type="email" id="inputEmail" class="form-control" placeholder="Email address"/>
+              <div *ngIf="registerForm.get('email')?.status =='PENDING'" class="fa fa-spinner fa-spin loader"></div>
+              <label  for="inputEmail">Email address</label>
+              <span class="text-danger" *ngIf="registerForm.get('email')?.invalid &&
+                           registerForm.get('email')?.touched && 
+                           registerForm.get('email')?.errors?.['required']">
+                Eamil Address is required
+              </span>
+
+              <span class="text-danger" *ngIf="registerForm.get('email')?.invalid &&
+                           registerForm.get('email')?.touched && 
+                           registerForm.get('email')?.errors?.['email']">
+                Eamil Address is not valid
+              </span>
+              <span class="text-danger" *ngIf=" registerForm.get('email')?.errors?.['emailExists']">
+                Eamil is taken
+              </span>
+
+
+            </div>
+          
+            <div class="form-label-group">
+              <input formControlName="password" type="password" id="inputPassword" class="form-control"/>
+              <label for="inputPassword">Password</label>
+
+              <span class="text-danger" *ngIf="registerForm.get('password')?.invalid &&
+                           registerForm.get('password')?.touched && 
+                           registerForm.get('password')?.errors?.['required']">
+                password is required
+              </span>
+
+              <span class="text-danger" *ngIf="registerForm.get('password')?.invalid &&
+                           registerForm.get('password')?.touched && 
+                           registerForm.get('password')?.errors?.['pattern']">
+                Password is not valid
+              </span>
+            </div>
+
+            <ul class="text-danger list-unstyled">
+                <li *ngFor="let error of errors">
+                    {{error}}
+                </li>
+            </ul>
+          
+            <button class="btn btn-lg btn-primary btn-block" [disabled]="registerForm.invalid" type="submit">Register</button>
+          </form>
+    </div>
+</div>

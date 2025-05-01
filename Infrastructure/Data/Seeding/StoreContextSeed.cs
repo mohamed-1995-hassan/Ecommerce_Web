@@ -2,7 +2,7 @@
 using Core.Entities;
 using Ecommerce_Web.Data;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Data.Seeding
 {
     public class StoreContextSeed
     {
@@ -73,7 +73,7 @@ namespace Infrastructure.Data
                         ProductTypeId = productTypes[0].Id,
                     }
                 });
-                
+
                 context.SaveChanges();
             }
         }

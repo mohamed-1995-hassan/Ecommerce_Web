@@ -1,5 +1,6 @@
 ﻿using Ecommerce_Web.Data;
 using Ecommerce_Web.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,12 @@ namespace Ecommerce_Web.Controllers
         public ActionResult GetBadRequestResult(int id)
         {
             return BadRequest();
+        }
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText() 
+        {
+            return "Secret Stuff";
         }
     }
 }

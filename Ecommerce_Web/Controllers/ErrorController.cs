@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce_Web.Controllers
 {
+    [Route("error/{code}")]
     public class ErrorController : BaseController
     {
         [HttpGet]

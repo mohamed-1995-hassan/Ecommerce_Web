@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.identity;
 using Ecommerce_Web.Dtos;
 
 namespace Ecommerce_Web
@@ -17,6 +18,19 @@ namespace Ecommerce_Web
                 Name = product.Name,
                 ProductBrand = product.ProductBrand.Name,
                 ProductType = product.ProductType.Name,
+            };
+        }
+
+        public static AddressDto ToAddressDto(this Address address)
+        {
+            return new AddressDto
+            {
+                City = address.City,
+                FirstName = address.FirstName,
+                LastName = address.LastName,
+                State = address.State,
+                Street = address.Street,
+                Zip = address.Zip   
             };
         }
     }
