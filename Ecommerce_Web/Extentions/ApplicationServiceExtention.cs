@@ -51,6 +51,7 @@ namespace Ecommerce_Web.Extentions
             services.AddScoped<ICartRepository, CartRepository>();
             services.AddScoped<CartService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>

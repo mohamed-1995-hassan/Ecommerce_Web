@@ -1,5 +1,6 @@
 ﻿
 using Core.Entities;
+using Core.Entities.OrderAggregate;
 using Ecommerce_Web.Data;
 
 namespace Infrastructure.Data.Seeding
@@ -76,6 +77,12 @@ namespace Infrastructure.Data.Seeding
 
                 context.SaveChanges();
             }
+
+            if (!context.DeliveryMethods.Any())
+            {
+                await context.DeliveryMethods.AddRangeAsync(GetDeliveryMethods());
+                context.SaveChanges();
+            }
         }
 
         private static List<ProductType> GetProductTypes() => new List<ProductType>
@@ -99,6 +106,38 @@ namespace Infrastructure.Data.Seeding
             new ProductBrand
             {
                 Name = "Brand2"
+            }
+        };
+
+        private static List<DeliveryMethod> GetDeliveryMethods() => new List<DeliveryMethod>
+        {
+            new DeliveryMethod
+            {
+                ShortName = "UPS1",
+                Description = "Fastest delivery time",
+                DeliveryTime = "1-2 Days",
+                Price = 10.00
+            },
+            new DeliveryMethod
+            {
+                ShortName = "UPS2",
+                Description = "Get it within 5 days",
+                DeliveryTime = "2-5 Days",
+                Price = 5.00
+            },
+            new DeliveryMethod
+            {
+                ShortName = "UPS3",
+                Description = "Slower but cheap",
+                DeliveryTime = "5-10 Days",
+                Price = 2.00
+            },
+            new DeliveryMethod
+            {
+                ShortName = "FREE",
+                Description = "Free! You get what you pay for",
+                DeliveryTime = "1-2 Weeks",
+                Price = 0.00
             }
         };
     }
