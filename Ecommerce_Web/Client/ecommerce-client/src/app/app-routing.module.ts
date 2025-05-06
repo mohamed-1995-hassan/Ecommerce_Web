@@ -13,6 +13,7 @@ const routes: Routes = [
   {path:'server-error', component:ServerErrorComponent, data:{breadcrumb:'Server Error'}},
   {path:'shop', loadChildren: ()=> import('./shop/shop.module').then(m => m.ShopModule), data:{breadcrumb:'Shop'}},
   {path:'cart', loadChildren: ()=> import('./cart/cart.module').then(m => m.CartModule), data:{breadcrumb:'cart'}},
+  {path:'orders', loadChildren: ()=> import('./orders/orders.module').then(m => m.OrdersModule), data:{breadcrumb:'orders'}},
   {
     path:'checkout',
     canActivate:[AuthGuard],

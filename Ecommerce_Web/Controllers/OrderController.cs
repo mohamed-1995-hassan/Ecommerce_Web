@@ -52,7 +52,7 @@ namespace Ecommerce_Web.Controllers
             return Ok(ordersToReturn);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Order>> GetOrdersForUser(int id)
+        public async Task<ActionResult<Order>> GetOrderForUserById(int id)
         {
             var email = User.RetrieveEmailFromPrincipl();
             var order = await _orderService.GetOrderForUserByIdAsync(id, email);
