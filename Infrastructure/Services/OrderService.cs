@@ -1,4 +1,5 @@
 ﻿
+using Core;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
 
@@ -55,11 +56,6 @@ namespace Infrastructure.Services
         public async Task<Order> GetOrderForUserByIdAsync(int id, string buyerEmail)
         {
             return await _orderRepository.GetUserOrder(id, buyerEmail);
-        }
-
-        public async Task<List<Order>> GetOrdersForUserAsync(string buyerEmail)
-        {
-            return await _orderRepository.GetUserOrders(buyerEmail);
         }
     }
 }

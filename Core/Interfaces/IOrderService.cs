@@ -9,7 +9,6 @@ namespace Core.Interfaces
                                 int deliveryMethodId,
                                 Guid cartId,
                                 Address shippingAddress);
-        Task<List<Order>> GetOrdersForUserAsync(string buyerEmail);
         Task<Order> GetOrderForUserByIdAsync(int id,string buyerEmail);
         Task<List<DeliveryMethod>> GetDeliveryMethods();
     }

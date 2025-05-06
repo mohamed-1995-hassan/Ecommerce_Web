@@ -1,9 +1,11 @@
 ﻿
+using Core;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
 using Ecommerce_Web.Dtos;
 using Ecommerce_Web.Errors;
 using Ecommerce_Web.Extentions;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,11 +15,13 @@ namespace Ecommerce_Web.Controllers
     public class OrderController : BaseController
     {
         private readonly IOrderService _orderService;
+        private readonly IOrderRepository _orderRepository;
         private readonly IConfiguration _config;
-        public OrderController(IOrderService orderService, IConfiguration config)
+        public OrderController(IOrderService orderService, IConfiguration config, IOrderRepository orderRepository)
         {
             _orderService = orderService;
             _config = config;
+            _orderRepository = orderRepository;
         }
         [HttpPost]
         public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
@@ -44,12 +48,22 @@ namespace Ecommerce_Web.Controllers
             return Ok(order);
         }
         [HttpGet]
-        public async Task<ActionResult<List<OrderToReturnDto>>> GetOrdersForUser()
+        public async Task<ActionResult<Pagination<OrderToReturnDto>>> GetOrdersForUser(int pageIndex, int pageSize)
         {
             var email = User.RetrieveEmailFromPrincipl();
-            var orders = await _orderService.GetOrdersForUserAsync(email);
-            var ordersToReturn = orders.Select(o => o.ToOrderToReturn(_config)).ToList();
-            return Ok(ordersToReturn);
+            var orders = (await _orderRepository.GetUserOrders(email, pageIndex, pageSize))
+                .Select(o => o.ToOrderToReturn(_config)).ToList();
+
+            var count = await _orderRepository.GetCountAsync(email);
+
+            var result = new Pagination<OrderToReturnDto>
+            {
+                Count = count,
+                Data = orders,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            return Ok(result);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrderForUserById(int id)

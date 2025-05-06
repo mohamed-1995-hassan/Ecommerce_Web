@@ -10,12 +10,31 @@ import { Order } from '../shared/models/order';
 export class OrderComponent implements OnInit {
 
   orders:Order[] = []
+  pageSize = 7;
+  pageIndex = 1;
+  totalCount = 0;
 
   constructor(private orderService:OrderService) { }
 
   ngOnInit(): void {
-    this.orderService.getOrders().subscribe({
-      next:orders => this.orders = orders
+    this.loadOrders();
+  }
+
+
+  loadOrders(){
+    this.orderService.getOrders(this.pageIndex, this.pageSize).subscribe({
+      next:orders =>{
+        this.orders = orders.data
+        this.totalCount = orders.count
+        this.pageIndex = orders.pageIndex
+      } 
     });
+  }
+
+  onPageChanged(event:any){
+    if(this.pageIndex !== event){
+      this.pageIndex = event;
+      this.loadOrders();
+    }
   }
 }

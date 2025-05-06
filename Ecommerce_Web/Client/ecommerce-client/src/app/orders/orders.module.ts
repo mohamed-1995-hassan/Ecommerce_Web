@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OrderComponent } from './order.component';
 import { OrderRoutingModule } from './order-routing.module';
 import { OrderDetailedComponent } from './order-detailed/order-detailed.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -15,7 +16,8 @@ import { OrderDetailedComponent } from './order-detailed/order-detailed.componen
   ],
   imports: [
     CommonModule,
-    OrderRoutingModule
+    OrderRoutingModule,
+    SharedModule
   ]
 })
 export class OrdersModule { }

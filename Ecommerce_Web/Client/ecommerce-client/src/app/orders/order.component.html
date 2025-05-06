@@ -23,4 +23,9 @@
             </table>
         </div>
     </div>
+
+    <div class="d-flex justify-content-center">
+        <app-pager [totalCount]="totalCount" [pageSize]="pageSize" (pageChanged)="onPageChanged($event)"></app-pager>
+    </div>
+
 </div>

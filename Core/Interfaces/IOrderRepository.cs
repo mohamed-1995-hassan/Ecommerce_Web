@@ -7,6 +7,7 @@ namespace Core.Interfaces
     {
         Task CreateOrder(Order order);
         Task<Order> GetUserOrder(int id, string userEmail);
-        Task<List<Order>> GetUserOrders(string userEmail);
+        Task<List<Order>> GetUserOrders(string userEmail, int pageIndex, int pageSize);
+        Task<int> GetCountAsync(string userEmail);
     }
 }

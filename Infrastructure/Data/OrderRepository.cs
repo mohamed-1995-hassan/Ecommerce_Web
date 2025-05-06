@@ -19,7 +19,7 @@ namespace Infrastructure.Data
             await _db.SaveChangesAsync();
         }
 
-        public async Task<List<Order>> GetUserOrders(string userEmail)
+        public async Task<List<Order>> GetUserOrders(string userEmail, int pageIndex, int pageSize)
         {
            return await _db.Orders
                             .Where(o => o.BuyerEmail == userEmail)
@@ -28,7 +28,15 @@ namespace Infrastructure.Data
                             .Include(o => o.Address)
                             .Include(o => o.DeliveryMethod)
                             .OrderByDescending(o => o.OrderDate)
+                            .Skip((pageIndex - 1) * pageSize).Take(pageSize)
+                            .Take(pageSize)
                             .ToListAsync();
+        }
+
+        public async Task<int> GetCountAsync(string userEmail)
+        {
+            var query = _db.Orders.Where(o => o.BuyerEmail == userEmail);
+            return await query.CountAsync();
         }
 
         public async Task<Order> GetUserOrder(int id, string userEmail)

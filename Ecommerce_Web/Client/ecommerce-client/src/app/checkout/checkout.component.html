@@ -12,12 +12,10 @@
                 </cdk-step>
 
                 <cdk-step [label]="'Review'">
-                    <app-checkout-review></app-checkout-review>
+                    <app-checkout-review [checkoutForm]="stepperForm"></app-checkout-review>
                 </cdk-step>
 
-                <cdk-step [label]="'Payment'">
-                    <app-checkout-payment [checkoutForm]="stepperForm"></app-checkout-payment>
-                </cdk-step>
+                
             </app-stepper>
         </div>
         <div class="col-4">
