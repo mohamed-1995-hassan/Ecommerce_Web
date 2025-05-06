@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Cart, CartItem, cartTotals } from '../shared/models/cart';
 import { HttpClient } from '@angular/common/http';
 import { product } from '../shared/models/product';
+import { DeliveryMethod } from '../shared/models/deliveryMethod';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,13 @@ export class CartService {
   cartTotalSource$ = this.cartTotalSource.asObservable();
 
   constructor(private http:HttpClient) { }
+
+  shipping = 0;
+
+  setShippingPrice(deliveryMethod:DeliveryMethod){
+    this.shipping = deliveryMethod.price;
+    this.calculateTotals()
+  }
 
   getCart(id:string){
     return this.http.get<Cart>(this.baseUrl + 'cart?cartId=' + id).subscribe({
@@ -77,12 +85,16 @@ export class CartService {
                 this.calculateTotals();
               }
               else{
-                this.cartSource.next(null)
-                this.cartTotalSource.next(null)
-                localStorage.removeItem('cart_id')
+                this.deleteLocalCart()
               }
             }
           }})
+  }
+
+  deleteLocalCart(){
+    this.cartSource.next(null)
+    this.cartTotalSource.next(null)
+    localStorage.removeItem('cart_id')
   }
 
 
@@ -111,10 +123,9 @@ export class CartService {
   private calculateTotals(){
     const cart= this.getCurrentCartValue()
     if(!cart) return
-    const shipping = 0;
     const subTotal = cart.items.reduce((a,b) =>(b.price * b.quantity) + a, 0)
-    const total = shipping + subTotal
+    const total = this.shipping + subTotal
 
-    this.cartTotalSource.next({shipping, subTotal, total})
+    this.cartTotalSource.next({shipping:this.shipping, subTotal, total})
   }
 }

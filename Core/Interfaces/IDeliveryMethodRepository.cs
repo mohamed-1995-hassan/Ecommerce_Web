@@ -5,6 +5,7 @@ namespace Core.Interfaces
 {
     public interface IDeliveryMethodRepository
     {
-        Task<DeliveryMethod> GetDeliveryMethodAsync(int id);
+        Task<List<DeliveryMethod>> GetDeliveryMethodsAsync();
+        Task<DeliveryMethod> GetDeliveryMethodAsync(int deliveryMethodId);
     }
 }

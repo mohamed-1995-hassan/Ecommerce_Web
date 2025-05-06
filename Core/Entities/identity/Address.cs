@@ -20,7 +20,12 @@ namespace Core.Entities.identity
         public void SetAddressValues(string firstName, string lastName, string city, string zip,
                                      string state, string street)
         {
-
+            FirstName = firstName;
+            LastName = lastName;
+            City = city;
+            Zip = zip;
+            State = state;
+            Street = street;
         }
     }
 }

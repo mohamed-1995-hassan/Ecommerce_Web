@@ -72,6 +72,16 @@ namespace Infrastructure.Data
             _db.SaveChanges();
         }
 
+        public async Task RemoveCart(Guid cartId)
+        {
+            var cart = await _db.Carts.Include(c => c.CartItems).FirstOrDefaultAsync(c => c.Id == cartId);
+            if (cart is null)
+                throw new InvalidOperationException("Invalid cart");
+            _db.Carts.Remove(cart);
+
+            _db.SaveChanges();
+        }
+
         public async Task<Cart> GetUserCart(Guid cartId)
         {
             

@@ -13,9 +13,11 @@ namespace Ecommerce_Web.Controllers
     public class OrderController : BaseController
     {
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService)
+        private readonly IConfiguration _config;
+        public OrderController(IOrderService orderService, IConfiguration config)
         {
             _orderService = orderService;
+            _config = config;
         }
         [HttpPost]
         public async Task<ActionResult<Order>> CreateOrder(OrderDto orderDto)
@@ -40,6 +42,27 @@ namespace Ecommerce_Web.Controllers
                 return BadRequest(new ApiResponse(400, "Problem Creating Order"));
 
             return Ok(order);
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<OrderToReturnDto>>> GetOrdersForUser()
+        {
+            var email = User.RetrieveEmailFromPrincipl();
+            var orders = await _orderService.GetOrdersForUserAsync(email);
+            var ordersToReturn = orders.Select(o => o.ToOrderToReturn(_config)).ToList();
+            return Ok(ordersToReturn);
+        }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Order>> GetOrdersForUser(int id)
+        {
+            var email = User.RetrieveEmailFromPrincipl();
+            var order = await _orderService.GetOrderForUserByIdAsync(id, email);
+            if (order == null) return BadRequest(new ApiResponse(404));
+            return Ok(order.ToOrderToReturn(_config));
+        }
+        [HttpGet("deliveryMethods")]
+        public async Task<ActionResult<List<DeliveryMethod>>> GetDeliveryMethods()
+        {
+            return Ok(await _orderService.GetDeliveryMethods());
         }
     }
 }

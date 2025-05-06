@@ -41,22 +41,25 @@ namespace Infrastructure.Services
 
             var order = new Order(buyerEmail, shippingAddress, items, subTotal, deliveryMethod);
 
+            await _orderRepository.CreateOrder(order);
+
+            await _cartRepository.RemoveCart(cartId);
             return order;
         }
 
-        public Task<List<DeliveryMethod>> GetDeliveryMethods()
+        public async Task<List<DeliveryMethod>> GetDeliveryMethods()
         {
-            throw new NotImplementedException();
+            return await _deliveryMethodRepository.GetDeliveryMethodsAsync();
         }
 
-        public Task<Order> GetOrderForUserByIdAsync(int id, string buyerEmail)
+        public async Task<Order> GetOrderForUserByIdAsync(int id, string buyerEmail)
         {
-            throw new NotImplementedException();
+            return await _orderRepository.GetUserOrder(id, buyerEmail);
         }
 
-        public Task<List<Order>> GetOrdersForUserAsync(string buyerEmail)
+        public async Task<List<Order>> GetOrdersForUserAsync(string buyerEmail)
         {
-            throw new NotImplementedException();
+            return await _orderRepository.GetUserOrders(buyerEmail);
         }
     }
 }

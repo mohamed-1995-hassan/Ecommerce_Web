@@ -13,9 +13,13 @@ namespace Infrastructure.Data
         {
             _db = db;
         }
-        public async Task<DeliveryMethod> GetDeliveryMethodAsync(int id)
+        public async Task<List<DeliveryMethod>> GetDeliveryMethodsAsync()
         {
-            return await _db.DeliveryMethods.FirstOrDefaultAsync(d => d.Id == id);
+            return await _db.DeliveryMethods.ToListAsync();
+        }
+        public async Task<DeliveryMethod> GetDeliveryMethodAsync(int deliveryMethodId)
+        {
+            return await _db.DeliveryMethods.FirstOrDefaultAsync(d => d.Id == deliveryMethodId);
         }
     }
 }
